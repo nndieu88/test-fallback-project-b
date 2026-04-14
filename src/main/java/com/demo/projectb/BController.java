@@ -21,4 +21,5 @@ public class BController {
 
         return ResponseEntity.ok("Response from B (ok)");
     }
+
 }
