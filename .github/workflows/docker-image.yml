@@ -24,11 +24,11 @@ jobs:
 
       - name: Build Image
         run: |
-          docker build -t ${{ secrets.DOCKER_USER }}/app1:latest .
+          docker build -t ${{ secrets.DOCKER_USER }}/app2:latest .
 
       - name: Push Image
         run: |
-          docker push ${{ secrets.DOCKER_USER }}/app1:latest
+          docker push ${{ secrets.DOCKER_USER }}/app2:latest
           
   deploy:
     needs: build
