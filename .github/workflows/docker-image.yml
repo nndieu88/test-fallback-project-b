@@ -1,0 +1,31 @@
+name: Build & Push Docker
+
+on:
+  push:
+    branches: [ "main" ]
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
+jobs:
+  docker:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Debug info
+        run: |
+          docker --version
+
+      - name: Login Docker Hub
+        run: |
+          echo "${{ secrets.DOCKER_PASS }}" | docker login -u "${{ secrets.DOCKER_USER }}" --password-stdin
+
+      - name: Build Image
+        run: |
+          docker build -t ${{ secrets.DOCKER_USER }}/app1:latest .
+
+      - name: Push Image
+        run: |
+          docker push ${{ secrets.DOCKER_USER }}/app1:latest
