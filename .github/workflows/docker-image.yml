@@ -8,7 +8,7 @@ env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
 
 jobs:
-  docker:
+  build:
     runs-on: ubuntu-latest
 
     steps:
@@ -29,3 +29,19 @@ jobs:
       - name: Push Image
         run: |
           docker push ${{ secrets.DOCKER_USER }}/app1:latest
+          
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Deploy to VPS
+        uses: appleboy/ssh-action@v1
+        with:
+          host: 140.238.206.93
+          username: ubuntu
+          key: ${{ secrets.SSH_KEY }}
+          script: |
+            cd /opt/apps
+            docker compose pull
+            docker compose up -d          
